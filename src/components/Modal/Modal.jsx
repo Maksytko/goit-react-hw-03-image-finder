@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { createPortal } from "react-dom/cjs/react-dom.development";
+import { createPortal } from "react-dom";
 import style from "./Modal.module.css";
 import propTypes from "prop-types";
 
