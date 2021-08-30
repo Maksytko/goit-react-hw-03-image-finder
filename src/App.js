@@ -81,14 +81,17 @@ class App extends Component {
       <div className="App">
         <Searchbar onSubmit={this.onSubmit} />
         <ImageGallery images={this.state.images} onImgClick={this.onImgClick} />
-        {this.state.images.length > 0 && <Button onClick={this.onClick} />}
         {this.state.modal && (
           <Modal
             image={this.state.imgForModal}
             toggleModal={this.toggleModal}
           />
         )}
-        {this.state.loading && <LoaderApp />}
+        {this.state.loading ? (
+          <LoaderApp />
+        ) : (
+          <Button onClick={this.onClick} images={this.state.images} />
+        )}
       </div>
     );
   }

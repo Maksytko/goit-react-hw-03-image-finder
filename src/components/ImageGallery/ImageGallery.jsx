@@ -1,7 +1,8 @@
 import style from "./ImageGallery.module.css";
+import propTypes from "prop-types";
+import { Component } from "react";
 
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
-import { Component } from "react";
 
 class ImageGallery extends Component {
   componentDidUpdate(prevProps) {
@@ -32,5 +33,10 @@ class ImageGallery extends Component {
     );
   }
 }
+
+ImageGallery.propTypes = {
+  onImgClick: propTypes.func,
+  images: propTypes.arrayOf(propTypes.object),
+};
 
 export default ImageGallery;
