@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { Component } from "react";
 
@@ -7,6 +6,7 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import Button from "./components/Button/Button";
 import Modal from "./components/Modal/Modal";
 import LoaderApp from "./components/Loader/Loader";
+import imagesApi from "./services/images-api";
 
 const BASE_URL = "https://pixabay.com/api";
 const KEY = "22330011-89d1f89aeaa9d6f980eea326f";
@@ -16,7 +16,7 @@ class App extends Component {
     name: "",
     images: [],
     loading: false,
-    modal: false,
+    isVisibleModal: false,
     imgForModal: "",
   };
 
@@ -29,9 +29,7 @@ class App extends Component {
     if (newName !== prevName) {
       this.setState({ loading: true });
       this.page = 1;
-      fetch(
-        `${BASE_URL}/?q=${newName}&page=${this.page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
-      )
+      imagesApi(BASE_URL, newName, this.page, KEY)
         .then((res) => res.json())
         .then((result) => {
           this.setState({ images: result.hits });
@@ -44,9 +42,7 @@ class App extends Component {
     this.setState({ loading: true });
     this.page = this.page + 1;
 
-    fetch(
-      `${BASE_URL}/?q=${this.state.name}&page=${this.page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
-    )
+    imagesApi(BASE_URL, this.state.name, this.page, KEY)
       .then((res) => res.json())
       .then((result) => {
         this.setState((prevState) => {
@@ -61,7 +57,7 @@ class App extends Component {
   };
 
   toggleModal = () => {
-    this.setState({ modal: !this.state.modal });
+    this.setState({ isVisibleModal: !this.state.isVisibleModal });
   };
 
   onImgClick = (event) => {
@@ -71,7 +67,7 @@ class App extends Component {
 
     this.setState({
       imgForModal: image.largeImageURL,
-      modal: true,
+      isVisibleModal: true,
     });
   };
 
@@ -80,7 +76,7 @@ class App extends Component {
       <div className="App">
         <Searchbar onSubmit={this.onSubmit} />
         <ImageGallery images={this.state.images} onImgClick={this.onImgClick} />
-        {this.state.modal && (
+        {this.state.isVisibleModal && (
           <Modal
             image={this.state.imgForModal}
             toggleModal={this.toggleModal}
